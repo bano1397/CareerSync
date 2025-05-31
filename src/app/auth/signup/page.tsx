@@ -3,14 +3,23 @@
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Lottie from "lottie-react";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [animationData, setAnimationData] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("/signupAnimation.json")
+      .then((res) => res.json())
+      .then(setAnimationData)
+      .catch(() => console.error("Failed to load Lottie animation"));
+  }, []);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -52,7 +61,6 @@ export default function SignUpPage() {
       return;
     }
 
-    // Auto login after signup
     const loginRes = await signIn("credentials", {
       email: formData.email,
       password: formData.password,
@@ -60,26 +68,38 @@ export default function SignUpPage() {
     });
 
     if (loginRes?.ok) {
-      router.push("/dashboard"); // ✅ Change to your dashboard route
+      router.push("/dashboard");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white p-4">
       <div className="flex w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl">
-        {/* Left Side */}
-        <div className="w-1/2 bg-gradient-to-tr from-purple-700 to-indigo-900 relative p-6 hidden md:flex flex-col justify-between">
-          <div>
+        {/* Left Side with Animation */}
+        <div className="w-1/2 bg-gradient-to-tr from-purple-700 to-indigo-900 relative p-6 hidden md:flex flex-col justify-between items-center">
+          <div className="w-full">
             <img src="/logo.svg" alt="CareerSync Logo" className="h-8 mb-6" />
             <button className="text-sm border border-white px-4 py-1 rounded-full hover:bg-white hover:text-black transition">
               Back to website →
             </button>
           </div>
-          <div className="mb-8">
+
+          <div className="w-full h-64 flex items-center justify-center">
+            {animationData && (
+              <Lottie
+                animationData={animationData}
+                loop
+                autoplay
+                className="w-full h-full"
+              />
+            )}
+          </div>
+
+          <div className="w-full mb-8 text-center">
             <h2 className="text-xl font-semibold">
-              Capturing Moments, <br /> Creating Memories
+              Unlock Your Career Potential
             </h2>
-            <div className="mt-4 flex gap-2">
+            <div className="mt-4 flex gap-2 justify-center">
               <span className="w-2 h-2 bg-white rounded-full" />
               <span className="w-2 h-2 bg-white rounded-full opacity-50" />
               <span className="w-2 h-2 bg-white rounded-full opacity-50" />
@@ -92,7 +112,10 @@ export default function SignUpPage() {
           <h2 className="text-3xl font-bold mb-2">Create an account</h2>
           <p className="text-sm text-gray-400 mb-6">
             Already have an account?{" "}
-            <Link href="/auth/loginForm" className="text-blue-400 hover:underline">
+            <Link
+              href="/auth/loginForm"
+              className="text-blue-400 hover:underline"
+            >
               Log in
             </Link>
           </p>
@@ -173,14 +196,22 @@ export default function SignUpPage() {
             <div className="flex gap-4 mt-4">
               <button
                 type="button"
-                onClick={() => signIn("google")}
+                onClick={() =>
+                  signIn("google", {
+                    callbackUrl: `${window.location.origin}/dashboard`,
+                  })
+                }
                 className="w-full flex items-center justify-center gap-2 p-3 bg-white text-black rounded-md hover:bg-gray-100"
               >
                 <FcGoogle size={20} /> Google
               </button>
               <button
                 type="button"
-                onClick={() => signIn("github")}
+                onClick={() =>
+                  signIn("github", {
+                    callbackUrl: `${window.location.origin}/dashboard`,
+                  })
+                }
                 className="w-full flex items-center justify-center gap-2 p-3 bg-white text-black rounded-md hover:bg-gray-100"
               >
                 <FaGithub size={20} /> GitHub

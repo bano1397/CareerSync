@@ -95,7 +95,7 @@ export default function LoginPage() {
             <div className="flex-grow h-px bg-gray-600"></div>
           </div>
 
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <button
               onClick={() => signIn("google")}
               className="flex items-center justify-center w-full py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
@@ -110,7 +110,24 @@ export default function LoginPage() {
               <FaGithub size={20} />
               <span className="ml-2">GitHub</span>
             </button>
-          </div>
+          </div> */}
+          <div className="flex gap-4">
+  <button
+    onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+    className="flex items-center justify-center w-full py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+  >
+    <FcGoogle size={20} />
+    <span className="ml-2">Google</span>
+  </button>
+  <button
+    onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+    className="flex items-center justify-center w-full py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition"
+  >
+    <FaGithub size={20} />
+    <span className="ml-2">GitHub</span>
+  </button>
+</div>
+
         </div>
       </div>
     </div>
