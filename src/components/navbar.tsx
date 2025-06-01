@@ -24,10 +24,9 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-8 items-center text-sm font-medium text-gray-700">
           <Link href="/dashboard" className="hover:text-purple-600">Dashboard</Link>
+          <Link href="/about" className="hover:text-purple-600">About</Link>
+          <Link href="/contact" className="hover:text-purple-600">Contact us</Link>
           <Link href="/profile" className="hover:text-purple-600">Profile</Link>
-          <Link href="/jobs" className="hover:text-purple-600">Jobs</Link>
-          <Link href="/tracker" className="hover:text-purple-600">Tracker</Link>
-          <Link href="/chatbot" className="hover:text-purple-600">Chatbot</Link>
         </nav>
 
         {/* Desktop Auth Buttons */}

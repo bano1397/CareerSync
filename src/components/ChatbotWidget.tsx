@@ -75,7 +75,7 @@ export default function ChatbotWidget({
               {!hasUserStarted && (
                 <div className="absolute inset-0 bg-white flex flex-col items-center justify-center">
                   <Player
-                    animationData={animationData} // ✅ correct prop
+                    animationData={animationData} 
                     loop
                     autoplay
                     style={{ height: 200, width: 200 }}
